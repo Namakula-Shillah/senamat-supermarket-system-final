@@ -20,6 +20,8 @@ db.sqlite3-journal
 
 # Generated Django files
 staticfiles/
+__pycache__/
+store/static/receipts/*.pdf
 
 # Editor files
 .vscode/
