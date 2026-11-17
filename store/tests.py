@@ -126,12 +126,12 @@ class ModelPageTests(TestCase):
 				response = self.client.get(path)
 				self.assertEqual(response.status_code, 200)
 				self.assertContains(response, 'href="/static/style.css"')
-				self.assertContains(response, 'href="/static/dashboard.css?v=12"')
+				self.assertContains(response, 'href="/static/dashboard.css?v=15"')
 				self.assertContains(response, "Log In")
 				self.assertContains(response, 'src="/static/assets/dashboard/images/logo1.png"')
 
 		signup_response = Client().get("/signup/")
-		self.assertContains(signup_response, 'href="/static/dashboard.css?v=12"')
+		self.assertContains(signup_response, 'href="/static/dashboard.css?v=15"')
 
 		page_response = self.client.get("/category/")
 		self.assertContains(page_response, 'src="/static/app.js?v=9"')
@@ -143,7 +143,7 @@ class ModelPageTests(TestCase):
 
 		self.assertEqual(response.status_code, 200)
 		self.assertTemplateUsed(response, "dashboard_index.html")
-		self.assertContains(response, 'href="/static/dashboard.css?v=13"')
+		self.assertContains(response, 'href="/static/dashboard.css?v=15"')
 		self.assertContains(response, 'href="/static/assets/dashboard/fonts/feather.css"')
 		self.assertEqual(response.context["customer_count"], 1)
 		self.assertEqual(response.context["product_count"], 2)
@@ -170,7 +170,7 @@ class ModelPageTests(TestCase):
 		self.assertContains(response, "Email:")
 		self.assertContains(response, "Address:")
 		self.assertContains(response, 'href="/about/"')
-		self.assertContains(response, "dashboard.css?v=13")
+		self.assertContains(response, "dashboard.css?v=15")
 
 	def test_root_url_shows_login_even_when_authenticated(self):
 		response = self.client.get("/")

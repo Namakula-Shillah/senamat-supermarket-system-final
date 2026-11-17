@@ -932,8 +932,8 @@ body.modal-open {
   min-height: 100vh;
   padding: 28px 16px;
   background:
-    radial-gradient(ellipse at 18% 12%, rgb(115 159 255 / 24%), transparent 35%),
-    linear-gradient(145deg, #173b78 0%, #326bce 50%, #edf3ff 50%, #f5f7fb 100%);
+    linear-gradient(120deg, rgb(9 30 63 / 68%), rgb(12 59 103 / 45%)),
+    url("assets/dashboard/images/Blue-Toned Supermarket Checkout Dashboard-3.png") center / cover fixed;
 }
 
 .login-card {
@@ -1119,8 +1119,7 @@ body.modal-open {
 
 body {
   background:
-    radial-gradient(ellipse at 86% 12%, rgb(91 206 205 / 13%), transparent 30%),
-    linear-gradient(135deg, #f3f6fd 0%, #edf3fb 55%, #eaf5f5 100%);
+    url("assets/dashboard/images/Blue-Toned Supermarket Checkout Dashboard-3.png") center / cover fixed;
 }
 
 .app-sidebar {
@@ -1191,7 +1190,7 @@ body {
 }
 
 .app-header {
-  background: linear-gradient(105deg, #fff 0%, #f0f5ff 72%, #e8f8f6 100%);
+  background: linear-gradient(105deg, rgb(255 255 255 / 94%) 0%, rgb(240 245 255 / 91%) 72%, rgb(232 248 246 / 91%) 100%);
   border-bottom-color: #dce6f4;
   box-shadow: 0 4px 18px rgb(45 78 132 / 5%);
 }
@@ -1208,7 +1207,8 @@ body {
 .app-content {
   background:
     radial-gradient(ellipse at 95% 2%, rgb(76 190 190 / 10%), transparent 27%),
-    radial-gradient(ellipse at 3% 28%, rgb(91 137 244 / 8%), transparent 30%);
+    radial-gradient(ellipse at 3% 28%, rgb(91 137 244 / 8%), transparent 30%),
+    linear-gradient(rgb(238 244 251 / 78%), rgb(238 244 251 / 78%));
 }
 
 .app-content .page-header {
