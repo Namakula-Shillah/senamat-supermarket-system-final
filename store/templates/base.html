@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block page_title %}SENAMAT SUPERMARKET{% endblock %}</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'assets/dashboard/fonts/feather.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/dashboard/fonts/material.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/dashboard/fonts/tabler-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+  <link rel="stylesheet" href="{% static 'dashboard.css' %}?v=13">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="app-sidebar">
+      <a class="sidebar-brand" href="{% url 'home' %}">
+        <img src="{% static 'assets/dashboard/images/logo1.png' %}" alt="">
+        <span>SENAMAT SUPERMARKET</span>
+      </a>
+      <div class="sidebar-section-label">Store management</div>
+      <nav class="sidebar-nav" aria-label="Main navigation">
+        <a class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">
+          <i class="feather icon-home" aria-hidden="true"></i><span>Dashboard</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'about' %}">
+          <i class="feather icon-info" aria-hidden="true"></i><span>About</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'sales' %}active{% endif %}" href="{% url 'sales' %}">
+          <i class="feather icon-shopping-cart" aria-hidden="true"></i><span>Sales</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'sales_item' %}active{% endif %}" href="{% url 'sales_item' %}">
+          <i class="feather icon-list" aria-hidden="true"></i><span>Sales items</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'purchases' %}active{% endif %}" href="{% url 'purchases' %}">
+          <i class="feather icon-package" aria-hidden="true"></i><span>Purchases</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'purchase_item' %}active{% endif %}" href="{% url 'purchase_item' %}">
+          <i class="feather icon-list" aria-hidden="true"></i><span>Purchase items</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'inventory' %}active{% endif %}" href="{% url 'inventory' %}">
+          <i class="feather icon-box" aria-hidden="true"></i><span>Inventory</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'product' %}active{% endif %}" href="{% url 'product' %}">
+          <i class="feather icon-tag" aria-hidden="true"></i><span>Products</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'category' %}active{% endif %}" href="{% url 'category' %}">
+          <i class="feather icon-grid" aria-hidden="true"></i><span>Categories</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'customer' %}active{% endif %}" href="{% url 'customer' %}">
+          <i class="feather icon-users" aria-hidden="true"></i><span>Customers</span>
+        </a>
+        <a class="{% if request.resolver_match.url_name == 'store' %}active{% endif %}" href="{% url 'store' %}">
+          <i class="feather icon-map-pin" aria-hidden="true"></i><span>Stores</span>
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <span class="user-avatar">{{ user.username|first|upper }}</span>
+        <span class="sidebar-user">{{ user.username }}</span>
+        <form method="post" action="{% url 'logout' %}">
+          {% csrf_token %}
+          <button type="submit" class="logout-button" aria-label="Log out"><i class="feather icon-log-out" aria-hidden="true"></i></button>
+        </form>
+      </div>
+    </aside>
+    <div class="app-main">
+      <header class="app-header">
+        <div>
+          <span class="header-eyebrow">SENAMAT SUPERMARKET</span>
+          <h1>{% block header_title %}Store management{% endblock %}</h1>
+        </div>
+        <span class="header-date">{% now "l, j F Y" %}</span>
+      </header>
+      <main class="app-content">
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+  <script src="{% static 'app.js' %}?v=9" defer></script>
+</body>
+</html>

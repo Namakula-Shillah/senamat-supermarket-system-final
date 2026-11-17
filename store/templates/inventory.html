@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block page_title %}SENAMAT SUPERMARKET | Inventory{% endblock %}
+{% block header_title %}Inventory{% endblock %}
+{% block content %}
+<main class="page">
+  <header class="page-header"><h1>Inventory</h1><p>Current stock levels by product and store. Stock updates automatically through purchases and sales.</p></header>
+  <section class="page-panel">
+    <div class="panel">
+      <h2>Inventory Records</h2>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>ID</th><th>Product</th><th>Store</th><th>Quantity</th></tr></thead>
+          <tbody>
+            {% for record in records %}
+              <tr><td>{{ record.pk }}</td><td>{{ record.product }}</td><td>{{ record.store }}</td><td>{{ record.quantity }}</td></tr>
+            {% empty %}
+              <tr><td colspan="4" class="empty-state">No inventory records yet. Record a purchase to add stock.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+</main>
+{% endblock %}

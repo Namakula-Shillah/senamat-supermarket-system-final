@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static tz %}
+{% block page_title %}Receipt #{{ sale.pk }} | SENAMAT SUPERMARKET{% endblock %}
+{% block header_title %}Sale receipt{% endblock %}
+{% block content %}
+<main class="receipt-page">
+  <article class="receipt-sheet" data-receipt-total="{{ sale.total_amount }}" data-saved-amount="{{ sale.amount_paid }}">
+    <header class="receipt-brand">
+      <img src="{% static 'assets/dashboard/images/logo1.png' %}" alt="Senamat Supermarket logo">
+      <h2>SENAMAT SUPERMARKET</h2>
+      <p>Sales receipt <span>#{{ sale.pk }}</span></p>
+    </header>
+    <dl class="receipt-meta">
+      <div><dt>Customer</dt><dd>{{ sale.customer.customer_name }}</dd></div>
+      <div><dt>Date and time</dt><dd>{{ sale.sale_date|localtime|date:"j M Y, g:i A" }}</dd></div>
+    </dl>
+    <div class="receipt-table-wrap">
+      <table class="receipt-table">
+        <thead><tr><th>Goods purchased</th><th>Qty</th><th>Unit price</th><th>Amount</th></tr></thead>
+        <tbody>
+          {% for item in items %}
+            <tr><td>{{ item.product.item }}</td><td>{{ item.quantity }}</td><td>{{ item.unit_price|floatformat:2 }} shs</td><td>{{ item.line_total|floatformat:2 }} shs</td></tr>
+          {% empty %}
+            <tr><td colspan="4">No goods recorded for this sale.</td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    <form method="post" class="receipt-payment-form">
+      {% csrf_token %}
+      <div class="receipt-payment-entry">
+        <div>
+          {{ payment_form.amount_paid.label_tag }}
+          {{ payment_form.amount_paid }}
+          {{ payment_form.amount_paid.errors }}
+        </div>
+        <button type="submit" name="save_payment" class="btn page-action">Save payment</button>
+      </div>
+    </form>
+    <dl class="receipt-summary">
+      <div><dt>Total amount</dt><dd>{{ sale.total_amount|floatformat:2 }} shs</dd></div>
+      <div><dt>Amount paid</dt><dd data-receipt-paid>{% if payment_entered %}{{ sale.amount_paid|floatformat:2 }} shs{% else %}Not entered{% endif %}</dd></div>
+      <div class="receipt-balance"><dt>Change</dt><dd data-receipt-balance>{% if payment_recorded %}{{ balance|floatformat:2 }} shs{% else %}Amount paid must cover {{ sale.total_amount|floatformat:2 }} shs{% endif %}</dd></div>
+    </dl>
+    <div class="receipt-actions">
+      <a class="btn btn-secondary" href="{% url 'sales' %}">Back to sales</a>
+      <form method="post">{% csrf_token %}<button type="submit" name="print_receipt" class="btn page-action" data-print-receipt {% if not payment_recorded %}disabled{% endif %}>Print Receipt</button></form>
+    </div>
+  </article>
+</main>
+{% endblock %}

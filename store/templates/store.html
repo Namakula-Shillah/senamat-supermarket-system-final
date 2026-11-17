@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% load static crispy_forms_tags %}
+{% block page_title %}SENAMAT SUPERMARKET | Store{% endblock %}
+{% block header_title %}Stores{% endblock %}
+{% block content %}
+<main class="page">
+  <header class="page-header page-titlebar"><div><h1>Store</h1><p>Store branches.</p></div><button class="btn page-action" type="button" data-open-form aria-haspopup="dialog" aria-controls="store-form">Add New Store</button></header>
+  <div class="notification-stack" aria-live="polite" aria-atomic="true">{% for message in messages %}<div class="notice notice-{{ message.tags }}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">{{ message }}</div>{% endfor %}</div>
+  <section id="store-form" class="form-modal" data-form-modal role="dialog" aria-modal="true" aria-labelledby="store-form-title" aria-hidden="{% if show_form %}false{% else %}true{% endif %}" {% if not show_form %}hidden{% endif %}><div class="panel form-modal-panel"><button class="form-modal-back" type="button" data-close-form aria-label="Back to records"><i class="feather icon-arrow-left" aria-hidden="true"></i><span>Back</span></button><h2 id="store-form-title">{% if editing %}Update{% else %}Add New{% endif %} Store</h2><form method="post" class="model-form" data-validate novalidate>{% csrf_token %}{% if editing %}<input type="hidden" name="edit_pk" value="{{ form.instance.pk }}">{% endif %}{{ form|crispy }}<div class="form-actions"><button type="submit">{% if editing %}Update{% else %}Add New Store{% endif %}</button>{% if editing %}<a class="btn btn-secondary" href="{% url 'store' %}">Cancel</a>{% endif %}</div></form></div></section>
+  <section id="store-records" class="page-panel" data-page-panel><div class="panel"><h2>Store Records</h2><div class="table-wrap"><table><thead><tr><th>ID</th><th>Store</th><th>Actions</th></tr></thead><tbody>{% for record in records %}<tr><td>{{ record.pk }}</td><td>{{ record }}</td><td class="row-actions"><a class="icon-action" href="?edit={{ record.pk }}" aria-label="Edit store"><i class="ti ti-edit" aria-hidden="true"></i></a><form method="post" data-confirm-delete>{% csrf_token %}<input type="hidden" name="delete_pk" value="{{ record.pk }}"><button class="icon-action" type="submit" aria-label="Delete store"><i class="ti ti-trash" aria-hidden="true"></i></button></form></td></tr>{% empty %}<tr><td colspan="3" class="empty-state">No stores yet.</td></tr>{% endfor %}</tbody></table></div></div></section>
+</main>
+{% endblock %}

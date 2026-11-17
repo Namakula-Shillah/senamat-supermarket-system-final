@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% load static %}
+{% block page_title %}SENAMAT SUPERMARKET | Dashboard{% endblock %}
+{% block header_title %}Dashboard{% endblock %}
+{% block content %}
+<div class="page dashboard-page">
+  <div class="notification-stack" aria-live="polite" aria-atomic="true">
+    {% for message in messages %}
+      <div class="notice notice-{{ message.tags }}" role="{% if message.tags == 'error' %}alert{% else %}status{% endif %}">{{ message }}</div>
+    {% endfor %}
+  </div>
+
+  <section class="dashboard-welcome">
+    <div>
+      <p class="welcome-kicker">Your store at a glance</p>
+      <h2>Welcome back, {{ user.username }}.</h2>
+      <p>Monitor sales, stock, and the people who keep your business moving.</p>
+    </div>
+    <form class="welcome-logout" method="post" action="{% url 'logout' %}">
+      {% csrf_token %}
+      <button class="welcome-action" type="submit"><i class="feather icon-log-out" aria-hidden="true"></i> Log Out</button>
+    </form>
+  </section>
+
+  <article class="card dashboard-card mb-3">
+    <div class="card-header">
+      <div><h2>Welcome to SENAMAT SUPERMARKET</h2><p>About this system</p></div>
+    </div>
+    <div class="card-body">
+      <p class="mb-0">SENAMAT is a supermarket management system that keeps track of customers, product categories, products, stores, inventory, purchases from suppliers, and
+        sales to customers. Use the menu to open any section, where you can add new records and
+        view existing data.</p>
+    </div>
+  </article>
+
+  <section class="row g-3 dashboard-stats" aria-label="Store summary">
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="card stat-card">
+        <div class="card-body">
+          <div class="stat-icon stat-icon-green"><i class="feather icon-dollar-sign" aria-hidden="true"></i></div>
+          <p class="stat-label">Total sales revenue</p>
+          <h3>{{ total_revenue|floatformat:2 }} <small>shs</small></h3>
+          <a href="{% url 'sales' %}">View sales <i class="feather icon-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+      </article>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="card stat-card">
+        <div class="card-body">
+          <div class="stat-icon stat-icon-blue"><i class="feather icon-shopping-bag" aria-hidden="true"></i></div>
+          <p class="stat-label">Sales transactions</p>
+          <h3>{{ sales_count }}</h3>
+          <a href="{% url 'sales' %}">Manage sales <i class="feather icon-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+      </article>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="card stat-card">
+        <div class="card-body">
+          <div class="stat-icon stat-icon-amber"><i class="feather icon-box" aria-hidden="true"></i></div>
+          <p class="stat-label">Units in stock</p>
+          <h3>{{ inventory_units }}</h3>
+          <a href="{% url 'inventory' %}">Check inventory <i class="feather icon-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+      </article>
+    </div>
+    <div class="col-12 col-sm-6 col-xl-3">
+      <article class="card stat-card">
+        <div class="card-body">
+
+          
+          <div class="stat-icon stat-icon-violet"><i class="feather icon-users" aria-hidden="true"></i></div>
+          <p class="stat-label">Customers</p>
+          <h3>{{ customer_count }}</h3>
+          <a href="{% url 'customer' %}">View customers <i class="feather icon-arrow-up-right" aria-hidden="true"></i></a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="row g-3 dashboard-lists">
+    <div class="col-12 col-xl-7">
+      <article class="card dashboard-card h-100">
+        <div class="card-header">
+          <div><h2>Recent sales</h2><p>Your latest recorded transactions</p></div>
+          <a href="{% url 'sales' %}?view=1">All sales <i class="feather icon-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="table-responsive">
+          <table class="table dashboard-table mb-0">
+            <thead><tr><th>Sale</th><th>Customer</th><th>Date</th><th class="text-end">Amount</th></tr></thead>
+            <tbody>
+              {% for sale in recent_sales %}
+                <tr>
+                  <td><a href="{% url 'sales' %}?edit={{ sale.pk }}">#{{ sale.pk }}</a></td>
+                  <td>{{ sale.customer.customer_name }}</td>
+                  <td>{{ sale.sale_date|date:"j M Y" }}</td>
+                  <td class="text-end">{{ sale.total_amount|floatformat:2 }} shs</td>
+                </tr>
+              {% empty %}
+                <tr><td colspan="4" class="empty-state">No sales recorded yet.</td></tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </article>
+    </div>
+    <div class="col-12 col-xl-5">
+      <article class="card dashboard-card h-100">
+        <div class="card-header">
+          <div><h2>Stock watch</h2><p>Products with 10 units or fewer</p></div>
+          <a href="{% url 'inventory' %}?view=1">Inventory <i class="feather icon-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        <div class="stock-list">
+          {% for item in low_stock %}
+            <div class="stock-row">
+              <span class="stock-product-icon"><i class="feather icon-package" aria-hidden="true"></i></span>
+              <div class="stock-product">
+                <strong>{{ item.product.item }}</strong>
+                <span>{{ item.store.store_name }}</span>
+              </div>
+              <span class="stock-quantity{% if item.quantity == 0 %} stock-empty{% endif %}">{{ item.quantity }} left</span>
+            </div>
+          {% empty %}
+            <p class="stock-empty-state">All recorded inventory levels are above 10 units.</p>
+          {% endfor %}
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="dashboard-shortcuts" aria-label="Store data">
+    <div><span class="shortcut-icon"><i class="feather icon-tag" aria-hidden="true"></i></span><span><strong>{{ product_count }}</strong><small>Products</small></span><a href="{% url 'product' %}" aria-label="Manage products"><i class="feather icon-arrow-up-right" aria-hidden="true"></i></a></div>
+    <div><span class="shortcut-icon"><i class="feather icon-grid" aria-hidden="true"></i></span><span><strong>{{ category_count }}</strong><small>Categories</small></span><a href="{% url 'category' %}" aria-label="Manage categories"><i class="feather icon-arrow-up-right" aria-hidden="true"></i></a></div>
+    <div><span class="shortcut-icon"><i class="feather icon-map-pin" aria-hidden="true"></i></span><span><strong>{{ store_count }}</strong><small>Store branches</small></span><a href="{% url 'store' %}" aria-label="Manage stores"><i class="feather icon-arrow-up-right" aria-hidden="true"></i></a></div>
+    <div><span class="shortcut-icon"><i class="feather icon-truck" aria-hidden="true"></i></span><span><strong>{{ purchase_count }}</strong><small>Purchases</small></span><a href="{% url 'purchases' %}" aria-label="Manage purchases"><i class="feather icon-arrow-up-right" aria-hidden="true"></i></a></div>
+  </section>
+</div>
+{% endblock %}
