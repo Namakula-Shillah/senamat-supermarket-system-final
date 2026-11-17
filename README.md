@@ -1,289 +1,339 @@
 # SENAMAT SUPERMARKET
 
-### Supermarket Management System
+## Supermarket Management System
 
-A Django-based supermarket management application for organizing products, customers, store branches, purchases, sales, and stock records in one place.
+**SENAMAT SUPERMARKET** is a web-based management system developed with Django to support supermarket operations, including product cataloguing, store and customer management, purchases, sales, stock monitoring, and receipt generation.
 
+> **Academic project — Web Application Development.** The public deployment is intended for assessment and demonstration using sample data. See [Current status and known issue](#current-status-and-known-issue) before relying on the dashboard for operational records.
+
+### Project links
+
+- **Live website:** https://senamat-supermarket-system-final.onrender.com/
+- **Source repository:** https://github.com/Namakula-Shillah/senamat-supermarket-system-final
+- **Hosting:** Render (web service and PostgreSQL database, Frankfurt region)
 
 ## 1. Project information
 
 | Item | Details |
 | --- | --- |
-| **Project title** | SENAMAT SUPERMARKET — Supermarket Management System |
-| **Project type** | Web-based management system |
-| **Backend framework** | Django (Python) |
-| **Frontend** | Django templates, HTML, CSS, JavaScript, Bootstrap-based UI |
-| **Local database** | SQLite |
-| **Application** | `store` |
-| **Django project configuration** | `supermarket` |
+| Project title | SENAMAT SUPERMARKET — Supermarket Management System |
+| Institution | Islamic University in Uganda (Kampala Campus) |
+| Programme | Bachelor of Information Technology |
+| Course unit | Web Application Development |
+| Lecturer | Mr. Walusimbi Abdul-Hakim |
+| Project type | Academic web application |
+| Django project | `supermarket` |
+| Django application | `store` |
+| Development database | SQLite |
+| Hosted database | PostgreSQL (Render) |
 
-## 2. Group members
+### Group members
 
-| No. | Full name           | Registration number 
-| 1   | NAMAKULA SHILLAH    | [224-063011-31887] 
-| 2   | SSERUGYA FARIID     | [224-063011-28296] 
-| 3   | ATAYI GENDER SHUHAT | [224-063012-30123] 
+| No. | Full name | Registration number |
+| --- | --- | --- |
+| 1 | NAMAKULA SHILLAH | 224-063011-31887 |
+| 2 | SSERUGYA FARIID | 224-063011-28296 |
+| 3 | ATAYI GENDER SHUHAT | 224-063012-30123 |
 
-**Institution:** [ISLAMIC UNIVERSITY IN UGANDA (KAMPALA CAMPUS)]  
-**Programme:** [BACHELOR OF INFORMATION TECHNOLOGY]  
-**Course unit:** [WEB APPLICATION DEVELOPMENT]  
-**Lecturer :** [MR. WALUSIMBI ABDUL-HAKIM]
+## 2. Problem statement and objectives
 
-## 3. Project overview
+Manual or fragmented supermarket recordkeeping can make it difficult to track available stock, manage sales and purchases consistently, and retrieve accurate operational information. SENAMAT provides a centralized interface for recording these activities and viewing their summaries.
 
-SENAMAT SUPERMARKET is designed to replace scattered or manual recordkeeping with a centralized interface. Authenticated users can maintain product and customer records, record supplier purchases and customer sales, and inspect quantities available at individual stores. The system calculates purchase and sales totals from their line items and updates recorded stock as items are purchased or sold.
+The project aims to:
 
-The dashboard summarizes key business information, including sales revenue, customer and product counts, store and transaction counts, overall stock quantity, recent sales, and low-stock items.
+1. Maintain organized records for products, categories, customers, and stores.
+2. Record purchases and sales with their associated line items.
+3. Track inventory quantity for each product at each store.
+4. Calculate transaction totals and adjust stock according to recorded transactions.
+5. Display summary information and low-stock items on a dashboard.
+6. Produce PDF sales receipts after sufficient payment is recorded.
+7. Provide authenticated access and invitation-based user registration.
 
-### Objectives
-
-- Keep structured records of products, categories, customers, and stores.
-- Track purchases from suppliers and sales to customers.
-- Maintain stock levels separately for each product and store.
-- Reduce manual errors through input validation and automatic total calculations.
-- Provide useful operational summaries for day-to-day decisions.
-- Produce PDF sales receipts after recording sufficient payment.
-- Restrict user registration with single-use administrator invitations.
-
-## 4. Main features
+## 3. Functional modules
 
 ### Dashboard and reporting
 
-- Live totals for customers, products, categories, stores, purchases, and sales.
-- Aggregate sales revenue and inventory units.
-- Recent-sales summary.
-- Low-stock listing for inventory quantities of **10 units or fewer**.
+The dashboard calculates counts for customers, products, categories, stores, purchases, and sales. It also shows total recorded inventory units, aggregate sales revenue, recent sales, and up to five low-stock entries (quantity **10 or fewer**).
 
-### Product, customer, and store management
+### Categories, products, customers, and stores
 
-- Create, view, edit, and delete product categories.
-- Maintain product descriptions, prices, brands, colors, models, and categories.
-- Register customer names, contact details, gender, and addresses.
-- View customer spending totals.
-- Maintain store or branch records.
+- Create, view, update, and remove category records.
+- Maintain product details such as item name, price, brand, model, color, and category.
+- Register customers and view relevant customer details and spending summaries.
+- Maintain supermarket store/branch records.
 
 ### Purchases and inventory
 
-- Record supplier purchases and the items belonging to each purchase.
-- Identify the product, destination store, quantity, and unit price of purchased items.
-- Automatically increase inventory when purchase items are added.
-- Recalculate purchase totals from their item quantities and prices.
-- Display stock quantities by product and store; stock is updated through purchase and sales transactions rather than direct editing on the inventory page.
+- Record supplier purchases and purchase line items.
+- Associate purchased products with a destination store and quantity.
+- Increase stock when purchase items are saved.
+- Recalculate purchase totals based on quantities and unit prices.
+- Display inventory per product and store.
 
 ### Sales and receipts
 
-- Create customer sales and add individual sale items.
-- Deduct sold quantities from the selected store's inventory.
-- Reject sale quantities that exceed available stock.
-- Recalculate sale totals from their items.
-- Record the amount paid and calculate the balance/change.
-- Generate a printable **PDF receipt** after payment covers the total sale amount.
+- Record sales and associated sale items.
+- Deduct stock quantities for sales, subject to availability checks.
+- Update calculated sale totals.
+- Record payment amounts and generate PDF receipts when payment covers the total.
 
-### Authentication and registration
+### Authentication and user administration
 
-- Login, logout, and Django administrator access.
-- Authenticated access required for the management pages.
-- User registration through a **single-use five-digit invitation code** generated by a superuser.
+- User login and logout.
+- Django administration interface.
+- Invitation-code registration, using single-use five-digit codes generated through administrative functionality.
 - A limit on repeated invalid invitation-code attempts.
 
-## 5. Technologies and dependencies
+## 4. Technology stack
 
-The included `requirements.txt` specifies:
-
-| Technology / package | Version or purpose |
+| Component | Technology |
 | --- | --- |
-| Python | Python runtime for Django; use a version compatible with the listed Django release |
-| Django | `6.1.2` — web application framework |
-| django-crispy-forms | `2.7` — form rendering |
-| crispy-bootstrap5 | `2026.9` — Bootstrap 5 form templates |
-| ReportLab | `>=4.2,<5` — PDF receipt generation |
-| SQLite | Default local development database |
-| HTML, CSS, JavaScript | Web interface and client-side behavior |
+| Backend | Python 3.13, Django 6.1.2 |
+| Frontend | Django templates, HTML, CSS, JavaScript, Bootstrap-based assets |
+| Forms | `django-crispy-forms`, `crispy-bootstrap5` |
+| PDF receipts | ReportLab |
+| Local persistence | SQLite |
+| Hosted persistence | PostgreSQL via `psycopg` and `dj-database-url` |
+| Web server | Gunicorn |
+| Static file serving | WhiteNoise |
+| Hosting and deployment | Render connected to GitHub |
+| Version control | Git and GitHub |
 
-## 6. Project folder structure
+The authoritative dependency versions are in [`requirements.txt`](requirements.txt). The Python runtime family is selected by [`.python-version`](.python-version).
+
+## 5. Repository structure
 
 ```text
 web project final/
-├── manage.py                   # Django management commands
-├── requirements.txt            # Python dependencies
-├── README.md                   # Project documentation
-├── db.sqlite3                  # Local database (do not publish)
-├── supermarket/                # Django project configuration
-│   ├── settings.py
+├── .gitignore
+├── .python-version
+├── README.md
+├── requirements.txt
+├── manage.py
+├── bootstrap_demo_admin.py    # Create demo superuser if absent
+├── start.sh                   # Migrate database and launch Gunicorn
+├── supermarket/
+│   ├── settings.py            # Environment-aware Django configuration
 │   ├── urls.py
 │   ├── asgi.py
 │   └── wsgi.py
-├── store/                      # Supermarket application
-│   ├── admin.py                # Django admin configuration
-│   ├── apps.py
-│   ├── forms.py                # Form validation and input forms
-│   ├── models.py               # Data models and stock logic
-│   ├── views.py                # Application functionality
-│   ├── urls.py                 # Application routes
-│   ├── tests.py                # Automated tests
-│   ├── migrations/             # Database schema migrations
-│   ├── templates/              # Django HTML templates
-│   └── static/                 # CSS, images, icons, and assets
-└── venv/                       # Local virtual environment (do not publish)
+└── store/
+    ├── admin.py
+    ├── forms.py
+    ├── models.py
+    ├── views.py
+    ├── middleware.py          # Authenticated HTML cache-control middleware
+    ├── urls.py
+    ├── tests.py
+    ├── migrations/
+    ├── templates/
+    └── static/
 ```
 
-## 7. Installation and local setup (Windows / VS Code)
+Files such as `db.sqlite3`, local virtual environments, environment-variable files, and generated static output should not be committed to Git.
 
-### Prerequisites
+## 6. Local installation (Windows / VS Code)
 
-- Python and `pip` installed.
-- VS Code or another code editor.
-- Git, if cloning the project from GitHub.
+### Requirements
 
-### Steps
-
-**1. Open the project directory** — the folder that contains `manage.py`.
+Install Python, Git, and a code editor such as Visual Studio Code. Open a terminal in the directory containing `manage.py`.
 
 ```powershell
-cd "C:\Users\Administrator\Desktop\web project final"
-```
+# Clone the repository if you do not already have it locally
+git clone https://github.com/Namakula-Shillah/senamat-supermarket-system-final.git
+cd senamat-supermarket-system-final
 
-**2. Create a virtual environment (only if one does not already exist).**
-
-```powershell
+# Create and activate a local Python environment
 python -m venv venv
-```
-
-**3. Activate the environment.**
-
-```powershell
 .\venv\Scripts\Activate.ps1
-```
 
-**4. Install the required packages.**
-
-```powershell
+# Install the project dependencies
 python -m pip install -r requirements.txt
-```
 
-**5. Apply database migrations.**
-
-```powershell
+# Prepare the local database
 python manage.py migrate
-```
 
-**6. Create an administrator account if needed.**
-
-```powershell
+# Optional: create an administrator account
 python manage.py createsuperuser
-```
 
-If the chosen administrator username already exists, inspect or update the existing account rather than attempting to create a duplicate. The credentials required by the lecturer should be set privately on the assessment environment; **do not commit passwords to this repository**.
-
-**7. Start the development server.**
-
-```powershell
+# Verify configuration and run locally
+python manage.py check
 python manage.py runserver
 ```
 
-**8. Open the application.**
+If using the original Desktop folder rather than a Git clone, open `C:\Users\Administrator\Desktop\web project final` and run the commands starting from virtual-environment activation.
 
-- Login: `http://127.0.0.1:8000/login/`
-- Main dashboard (after login): `http://127.0.0.1:8000/home/`
-- Django admin: `http://127.0.0.1:8000/admin/`
+Useful local addresses:
 
-## 8. Basic workflow
+- Login: http://127.0.0.1:8000/ or http://127.0.0.1:8000/login/ 
+- Dashboard: http://127.0.0.1:8000/home/
+- Django Admin: http://127.0.0.1:8000/admin/
 
-1. A superuser creates a one-time invitation code in the Django administration area, if additional user accounts are needed.
-2. A new user registers at `/signup/` with the invitation code and then signs in.
-3. The user creates categories, store branches, and products.
-4. The user adds customer records where needed.
-5. A supplier purchase is recorded, followed by the products, quantities, prices, and destination stores in that purchase.
-6. Stock increases automatically in the appropriate store.
-7. A customer sale is created, followed by its sale items; stock is reduced when items are saved.
-8. The amount paid is recorded on the receipt page, after which a PDF receipt can be generated.
-9. The dashboard provides a summary of recent activity and low-stock products.
+The local database defaults to SQLite. Data entered locally is **not automatically copied** into the PostgreSQL database used by Render.
 
-## 9. Important application routes
+## 7. Typical usage workflow
 
-| Path | Function |
+1. Sign in using an authorized account.
+2. Set up stores, product categories, products, and customers.
+3. Create a supplier purchase and add the purchased items.
+4. Review the updated inventory quantities for the relevant stores.
+5. Create a customer sale and add sale items.
+6. Record payment and generate a PDF receipt, if applicable.
+7. Review operational totals, recent sales, and low-stock entries on the dashboard.
+
+## 8. Main routes
+
+| Route | Description |
 | --- | --- |
-| `/` or `/login/` | Login page |
-| `/signup/` | Invitation-based registration |
+| `/` and `/login/` | Sign-in |
+| `/signup/` | Invitation-based account registration |
 | `/home/` | Dashboard |
-| `/category/` | Categories |
-| `/customer/` | Customers |
+| `/category/` | Product categories |
 | `/product/` | Products |
-| `/store/` | Stores / branches |
-| `/inventory/` | Stock overview |
-| `/purchases/` | Supplier purchases |
-| `/purchase-item/` | Items in purchases |
-| `/sales/` | Customer sales |
-| `/sales-item/` | Items in sales |
-| `/sales/<sale_id>/receipt/` | Payment and printable sale receipt |
-| `/about/` | About the application |
+| `/customer/` | Customers |
+| `/store/` | Stores/branches |
+| `/inventory/` | Inventory overview |
+| `/purchases/` | Purchases |
+| `/purchase-item/` | Purchase line items |
+| `/sales/` | Sales |
+| `/sales-item/` | Sale line items |
+| `/sales/<sale_id>/receipt/` | Sale receipt/payment workflow |
+| `/about/` | About page |
 | `/admin/` | Django administration |
 
-## 10. Data model and business rules
+## 9. Database and data integrity
 
-The database contains records for `Category`, `Customer`, `Product`, `Store`, `Inventory`, `Purchases`, `PurchaseItem`, `Sales`, `SalesItem`, and `SignupInvitation`.
+The application includes models such as `Category`, `Customer`, `Product`, `Store`, `Inventory`, `Purchases`, `PurchaseItem`, `Sales`, `SalesItem`, and `SignupInvitation`.
 
-Key rules implemented in the project include:
+Key business rules include stock adjustments on purchase/sale item changes, prevention of selling more items than are in stock, recalculation of transaction totals, and one-time signup invitations.
 
-- Category names are unique without regard to letter case.
-- Inventory is unique for a given **product and store** pair.
-- Sale items cannot reduce recorded inventory below zero.
-- Purchase and sale totals are recalculated from transaction line items.
-- Editing or deleting transaction items adjusts the relevant totals and stock records.
-- A signup invitation code can be used only once.
-- A PDF receipt requires a recorded payment that covers the sale total.
+**Deployment database:** On Render, `supermarket/settings.py` requires a `DATABASE_URL` environment variable. The deployed application uses PostgreSQL for its database-backed records. The free web service's local filesystem should not be used as permanent business data storage.
 
-## 11. Testing
+## 10. Render deployment configuration
 
-Run the existing Django automated tests:
+The GitHub repository contains the files used for deployment:
+
+- `start.sh` runs migrations, attempts to provision a demonstration superuser, and starts `supermarket.wsgi:application` with Gunicorn.
+- `bootstrap_demo_admin.py` reads demo account details from environment variables. It creates the account when missing; it does not overwrite an existing superuser's password.
+- `.python-version` selects Python 3.13.
+- `requirements.txt` includes Django, ReportLab, WhiteNoise, Gunicorn, PostgreSQL connectivity, and form-rendering packages.
+
+### Web service settings
+
+| Setting | Value |
+| --- | --- |
+| Runtime | Python |
+| Region | Frankfurt (same as PostgreSQL) |
+| Branch | `main` |
+| Build command | `pip install -r requirements.txt && python manage.py collectstatic --noinput` |
+| Start command | `bash start.sh` |
+
+### Required Render environment variables
+
+| Name | Purpose |
+| --- | --- |
+| `DJANGO_SECRET_KEY` | Secure Django secret key; must remain private |
+| `DATABASE_URL` | Internal PostgreSQL connection string; must remain private |
+| `DJANGO_SUPERUSER_USERNAME` | Temporary demo administrator username |
+| `DJANGO_SUPERUSER_PASSWORD` | Temporary demo administrator password |
+| `DJANGO_SUPERUSER_EMAIL` | Email associated with the demo account |
+
+**Do not store the values of secrets or passwords in this README.** The lecturer-provided demonstration credentials are for temporary assessment only and should be changed or disabled afterward. Use fictional supermarket data in public demonstrations.
+
+### Updating the deployed website
+
+After making and testing local changes:
 
 ```powershell
-python manage.py test store
+git status
+git add README.md
+git commit -m "Update SENAMAT project documentation"
+git push origin main
 ```
 
-Check the project configuration:
+For application code changes, stage the actual changed code files as well. If automatic deployment is enabled, Render will redeploy the updated `main` branch; otherwise select **Manual Deploy → Deploy latest commit**.
+
+## 11. Current status and known issue
+
+**Status (17 November 2026):** The group has reported a successful Render deployment and confirmed that test records are retained in Django Admin. The cache-control middleware is registered in the local Django settings according to the supplied VS Code screenshot. Whether that exact revision is deployed and whether it corrects the issue remain unverified. There is an **unresolved dashboard record-display issue** that must be verified before final submission.
+
+### Observed behavior
+
+- Records appear immediately after saving through the SENAMAT dashboard.
+- After navigating to another module and returning, previously saved records can be missing from the dashboard table.
+- The same test record remains accessible through Django Admin.
+- The behavior has been reported across multiple dashboard modules, not only Categories.
+
+**Interpretation:** These observations show that the tested records were not lost from PostgreSQL. They do **not** yet prove whether the dashboard issue is caused by stale browser content, frontend rendering, or server-side response logic.
+
+### Cache-control work under review
+
+The repository includes `store/middleware.py` with `NoStoreForAuthenticatedHTMLMiddleware`. This middleware adds no-cache headers to authenticated HTML GET responses.
+
+**Middleware registration (locally confirmed):** A VS Code screenshot shared on **17 November 2026** shows that the middleware is **already registered in the local** `supermarket/settings.py` immediately after Django's `AuthenticationMiddleware`:
+
+```python
+'django.contrib.auth.middleware.AuthenticationMiddleware',
+'store.middleware.NoStoreForAuthenticatedHTMLMiddleware',
+```
+
+There is **no need to add it a second time**. The screenshot does **not** by itself establish that this exact settings change has been committed to GitHub and deployed on Render. Verify the deployed revision before assessing its effect:
 
 ```powershell
 python manage.py check
+git status
+git add supermarket/settings.py store/middleware.py
+git commit -m "Register authenticated dashboard cache-control middleware"
+git push origin main
 ```
 
-The included tests cover page access, authentication, invitation codes, form validation, record operations, transaction totals, stock adjustments, dashboard information, and receipt behavior. Test results depend on the local environment and have not been claimed as passing in this document.
+If Git says `nothing to commit`, check `git status` and the repository's `main` branch to confirm the change is already recorded. Then wait for the relevant Render deployment to show **Live** and repeat the navigation tests.
 
-## 12. GitHub and deployment
+**Important:** This middleware is a **possible mitigation for cached HTML**, not a proven fix. Since the records remain in Django Admin, the investigation must also consider table rendering, template context, filters, and responses from the shared CRUD views. Keep the status as **unresolved until verified across all affected modules**.
 
-**GitHub repository:** [Add the actual GitHub repository URL]  
-**Deployed application:** [Add the actual Render or Vercel URL after deployment]  
-**Deployment status:** Local development version; public deployment not yet verified.
+### Verification procedure
 
-### Deployment notes
+1. Open the deployed SENAMAT application in a new browser session.
+2. Save a unique **test** category or customer through the dashboard.
+3. Confirm the saved record is present in Django Admin.
+4. Navigate to another module, return, and check whether the record remains visible.
+5. If it disappears, hard-refresh the page (`Ctrl + Shift + R`).
+6. If it still disappears, inspect **View Page Source** for the test value:
+   - **Present in HTML, absent on screen:** investigate frontend table/rendering behavior.
+   - **Absent from HTML, present in Django Admin:** investigate the Django view, template context, filters, and relevant request logs.
+7. Repeat on Categories, Products, Customers, Purchases, Sales, and Stores.
+8. If the page source contains the record, also check whether a JavaScript table widget, search term, pagination, or client-side filter is hiding it.
+9. Mark the issue resolved only after records remain visible across navigation, refreshes, and fresh sessions on the deployed site.
 
-This archive is configured for **local development**, not yet production hosting:
--The project will be deployed using Render.
+**Do not clear, reset, or recreate the PostgreSQL database as a troubleshooting shortcut.** Preserve existing data while investigating display behavior.
 
-- `supermarket/settings.py` currently uses SQLite, `DEBUG = True`, an empty `ALLOWED_HOSTS` list, and a source-code `SECRET_KEY`.
-- A live service needs secure environment-based configuration and a production web server.
-- Render's ephemeral filesystem is not suitable for persistent SQLite records or saved receipt files; configure persistent database and file handling before relying on hosted records.
-- Static files require production configuration and collection/serving.
-- The Django project module is **`supermarket`**; its WSGI entry point is `supermarket.wsgi:application`.
+## 12. Testing and quality checks
 
+Run locally:
 
-**Do not assume deployment is complete merely because the code has been pushed to GitHub.** Test authentication, inventory changes, sales, receipts, and persistence on the public URL before submitting.
+```powershell
+python manage.py check
+python manage.py test store
+```
 
-## 13. Security and repository hygiene
+Recommended acceptance checks include login, group-based access as configured, validation, category/product/customer/store operations, purchase and sale totals, inventory adjustments, receipt generation, and dashboard visibility across navigation and page reloads.
 
-- Do not publish passwords, secret keys, database backups, or private customer information.
-- Do not commit `venv/`, `.env`, `db.sqlite3`, Python cache directories, or generated receipt files.
-- Use a `.gitignore` to exclude local-only and sensitive files. If secrets were committed previously, remove them from history and rotate them.
-- Use the course-required temporary demonstration account only with non-sensitive sample data, then change or disable it after evaluation.
-- Before public deployment, move `SECRET_KEY` into environment variables, disable debug mode, and configure allowed hosts, HTTPS, and durable storage.
+Passing automated tests alone is not proof that the deployed dashboard display problem has been resolved; browser-based tests against the deployed service are still required.
 
-## 14. Limitations and potential improvements
+## 13. Known limitations and security notes
 
-Potential future enhancements include barcode scanning, supplier profiles, stock-reorder alerts, richer analytics, role-specific access permissions, audit trails, and support for additional payment options. These are **proposed enhancements**, not features claimed to exist in the current project.
+- **PDF receipt storage:** The current receipt generator writes PDFs to a local directory on the application server. Render's ephemeral filesystem does not provide permanent receipt storage; use external object storage if lasting PDFs are required.
+- **Free hosting:** Free service/database lifecycle limits and sleeping behavior may affect demonstrations. Check current Render plan conditions and verify the deployed application shortly before assessment.
+- **Environment separation:** Local SQLite records do not appear automatically in hosted PostgreSQL.
+- **Data protection:** Do not publish real customer details, database connection URLs, secret keys, or administrator passwords.
+- **Git hygiene:** Exclude `.env`, `db.sqlite3`, virtual environments, cache files, generated receipt PDFs, and generated static output. If sensitive data was committed earlier, remove it from history and rotate exposed secrets.
+- **Status reporting:** Do not describe the dashboard record-display issue as fixed until live testing confirms it.
+
+## 14. Future enhancements
+
+Potential improvements include barcode scanning, more detailed role permissions, audit trails, inventory reorder alerts, richer analytics, improved receipt persistence, and expanded payment options. These are proposed improvements, not existing features.
 
 ---
 
 **SENAMAT SUPERMARKET — Supermarket Management System**  
-*Academic project documentation.*
-
-
+*Islamic University in Uganda, Kampala Campus — Web Application Development project.*
